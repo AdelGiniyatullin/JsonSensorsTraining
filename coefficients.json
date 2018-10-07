@@ -1,37 +1,52 @@
 {
     "sensors": [
         {
-            "A": [
-                700.058,
-                -0.128352,
-                0.000124452,
-                0.222531,
-                2.88839e-06,
-                9.2249e-08
-            ],
-            "Fp0": 1237,
-            "Ft0": 459,
-            "name": "leftBottommmmmmm",
-            "pressureChannel": 13,
             "sensorNumber": 1123,
-            "temperatureChannel": 19
+            "name": "leftBottom",
+            "pressureChannel": 13,
+            "temperatureChannel": 19,
+            "A": [
+                700.0582264,
+                -0.128352315,
+                0.000124452,
+                0.222531493,
+                0.00000288839,
+                0.000000092249
+            ],
+            "Ft0": 459,
+            "Fp0": 1237
         },
         {
-            "A": [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            ],
-            "Fp0": 0,
-            "Ft0": 0,
-            "name": "",
+            "sensorNumber": 1124,
+            "name": "rightBottom",
             "pressureChannel": 0,
-            "sensorNumber": 1123,
-            "temperatureChannel": 0
+            "temperatureChannel": 6,
+            "A": [
+                699.9472182,
+                -0.097067783,
+                0.000417366,
+                0.220191428,
+                0.00000300746,
+                0.00000000438
+            ],
+            "Ft0": 458,
+            "Fp0": 1214
+        },
+        {
+            "sensorNumber": 1125,
+            "name": "deep",
+            "pressureChannel": 1,
+            "temperatureChannel": 7,
+            "A": [
+                679.9433797,
+                -0.106754694,
+                0.000217489,
+                0.609868381,
+                0.00000328823,
+                0.0000056004
+            ],
+            "Ft0": 462,
+            "Fp0": 879
         }
     ]
 }

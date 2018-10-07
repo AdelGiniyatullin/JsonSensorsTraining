@@ -1,0 +1,37 @@
+{
+    "sensors": [
+        {
+            "A": [
+                700.058,
+                -0.128352,
+                0.000124452,
+                0.222531,
+                2.88839e-06,
+                9.2249e-08
+            ],
+            "Fp0": 1237,
+            "Ft0": 459,
+            "name": "leftBottommmmmmm",
+            "pressureChannel": 13,
+            "sensorNumber": 1123,
+            "temperatureChannel": 19
+        },
+        {
+            "A": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "Fp0": 0,
+            "Ft0": 0,
+            "name": "",
+            "pressureChannel": 0,
+            "sensorNumber": 1123,
+            "temperatureChannel": 0
+        }
+    ]
+}

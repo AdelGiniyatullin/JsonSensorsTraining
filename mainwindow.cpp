@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QList>
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -107,8 +108,12 @@ void MainWindow::on_Pushbutton_add_clicked()
 
 void MainWindow::on_pushbutton_delete_clicked()
 {
-    qDebug()<<sensorsData.size();
-  //  qDebug()<<sensorsData[3].sensorNumber;
+      qDebug()<<sensorsData.size()<<" :Before delete";
+    //qDebug()<<ui->listWidget->currentRow();
+
+      sensorsData.removeAt(ui->listWidget->currentRow());
+      delete ui->listWidget->takeItem(ui->listWidget->currentRow());
+      qDebug()<<sensorsData.size()<<" :After delete";
 }
 
 void MainWindow::on_pushbutton_save_clicked()
@@ -123,7 +128,6 @@ void MainWindow::on_pushbutton_save_clicked()
     QString FpO("Fp0");
     QString AA("A");
     QJsonArray array;
-//    ui->listWidget->addItem("1234");
 
     for (int i=0; i<sensorsData.count(); i++)
     {

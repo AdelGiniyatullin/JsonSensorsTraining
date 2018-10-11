@@ -25,48 +25,19 @@ MainWindow::MainWindow(QWidget *parent) :
         QJsonArray vall = value.toArray();
         for (int i=0; i<vall.count(); i++)
         {
-          QJsonObject object  = vall.at(i).toObject();
-          Sensor tmpSensor;
-          tmpSensor.sensorNumber = object.value("sensorNumber").toDouble();
-          tmpSensor.name = object.value("name").toString();
-          tmpSensor.pressureChannel = object.value("pressureChannel").toDouble();
-          tmpSensor.temperatureChannel = object.value("temperatureChannel").toDouble();
-          tmpSensor.A = object.value("A").toArray();
-          tmpSensor.Ft0 = object.value("Ft0").toInt();
-          tmpSensor.Fp0 = object.value("Fp0").toInt();
-          sensorsData.append(tmpSensor);
-          //QJsonObject arrayA = sensorsData[i].A.at(0).toObject();
-          //qDebug() << QString::number(sensorsData[i].A.at(1).toDouble());
-          //qDebug()<<sensorsData[i].A.count();
-
-
-          ui->listWidget->addItem((QString::number(object.value("sensorNumber").toDouble())));
-                  //((QString::number(object.value("sensorNumber").toDouble())));
-
-
+            QJsonObject object  = vall.at(i).toObject();
+            Sensor tmpSensor;
+            tmpSensor.sensorNumber = object.value("sensorNumber").toDouble();
+            tmpSensor.name = object.value("name").toString();
+            tmpSensor.pressureChannel = object.value("pressureChannel").toDouble();
+            tmpSensor.temperatureChannel = object.value("temperatureChannel").toDouble();
+            tmpSensor.A = object.value("A").toArray();
+            tmpSensor.Ft0 = object.value("Ft0").toInt();
+            tmpSensor.Fp0 = object.value("Fp0").toInt();
+            sensorsData.append(tmpSensor);
+            ui->listWidget->addItem((QString::number(object.value("sensorNumber").toDouble())));
         }
         file->close();
-      //  sensorsData.reserve(vall.count()+1);
-        //qDebug()<<sensorsData.size();
-
-
-
-//        Sensor tmpsensor;
-//        tmpsensor.sensorNumber = 0;
-//        tmpsensor.name = "";
-//        tmpsensor.pressureChannel = 0;
-//        tmpsensor.temperatureChannel = 0;
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.A.append("");
-//        tmpsensor.Fp0 = 0;
-//        tmpsensor.Ft0 = 0;
-//        sensorsData.append(tmpsensor);
-
 }
 
 MainWindow::~MainWindow()
@@ -74,14 +45,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-
-
-
-
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-  //  qDebug()<<ui->listWidget->currentItem()->text();
     for (int i=0; i<sensorsData.count(); i++)
                 {
                   if ((QString::number(sensorsData[i].sensorNumber)) == ui->listWidget->currentItem()->text()){
@@ -117,44 +82,33 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
                }
 
+
 }
 
 void MainWindow::on_Pushbutton_add_clicked()
 {
     ui->listWidget->addItem("0");
-    for (int i=0; i<sensorsData.count(); i++)
-                {
-                  if ("Default" == ui->listWidget->currentItem()->text()){
-//                      ui->SensorNumber->setText("Default");
-//                      ui->Name->setText("Default");
-//                      ui->pressureChanel->setText("Default");
-//                      ui->temperatureChannel->setText("Default");
-//                      ui->A0->setText("Default");
-//                      ui->A1->setText("");
-//                      ui->A2->setText("");
-//                      ui->A3->setText("");
-//                      ui->A4->setText("");
-//                      ui->A5->setText("");
-//                      ui->Ft0->setText("");
-//                      ui->Fp0->setText("");
-                      if ((ui->listWidget->count() - sensorsData.count()) > 0 )
-                      {
-                          sensorsData.reserve(ui->listWidget->count() - sensorsData.count());
-                          sensorsData[sensorsData.size()+1].sensorNumber = ui->listWidget->currentItem()->text().toDouble();
-                      }
-
-                 }
-
-
-
-               }
-
-
+    Sensor tmpsensor;
+    tmpsensor.sensorNumber = 0;
+    tmpsensor.name = "default";
+    tmpsensor.pressureChannel = 0;
+    tmpsensor.temperatureChannel = 0;
+    tmpsensor.A.at(0) = 0;
+    tmpsensor.A.at(1) = 0;
+    tmpsensor.A.at(2) = 0;
+    tmpsensor.A.at(3) = 0;
+    tmpsensor.A.at(4) = 0;
+    tmpsensor.A.at(5) = 0;
+    tmpsensor.Fp0 = 0;
+    tmpsensor.Ft0 = 0;
+    sensorsData.append(tmpsensor);
+//    qDebug() << ui->listWidget->count() << sensorsData.count();
 }
 
 void MainWindow::on_pushbutton_delete_clicked()
 {
-    qDebug()<<sensorsData.count();
+    qDebug()<<sensorsData.size();
+  //  qDebug()<<sensorsData[3].sensorNumber;
 }
 
 void MainWindow::on_pushbutton_save_clicked()
@@ -169,69 +123,47 @@ void MainWindow::on_pushbutton_save_clicked()
     QString FpO("Fp0");
     QString AA("A");
     QJsonArray array;
+//    ui->listWidget->addItem("1234");
 
-
-    for (int i=0; i<sensorsData.count()-1; i++)
+    for (int i=0; i<sensorsData.count(); i++)
+    {
+        if((QString::number(sensorsData[i].sensorNumber)) == ui->listWidget->currentItem()->text())
         {
-            if((QString::number(sensorsData[i].sensorNumber)) == ui->listWidget->currentItem()->text())
+            sensorsData[i].sensorNumber = ui->SensorNumber->text().toDouble();
+            sensorsData[i].name = ui->Name->text();
+            sensorsData[i].pressureChannel = ui->pressureChanel->text().toDouble();
+            sensorsData[i].temperatureChannel = ui->temperatureChannel->text().toDouble();
+            sensorsData[i].A.at(0) = ui->A0->text().toDouble();
+            sensorsData[i].A.at(1) = ui->A1->text().toDouble();
+            sensorsData[i].A.at(2) = ui->A2->text().toDouble();
+            sensorsData[i].A.at(3) = ui->A3->text().toDouble();
+            sensorsData[i].A.at(4) = ui->A4->text().toDouble();
+            sensorsData[i].A.at(5) = ui->A5->text().toDouble();
+            sensorsData[i].Fp0 = ui->Fp0->text().toInt();
+            sensorsData[i].Ft0 = ui->Ft0->text().toInt();
+            ui->listWidget->currentItem()->setText(ui->SensorNumber->text());
 
-            {
-                Sensor tmpSensor2;
-                tmpSensor2.sensorNumber =  ui->SensorNumber->text().toDouble();
-                tmpSensor2.name = ui->Name->text();
-                tmpSensor2.pressureChannel = ui->pressureChanel->text().toDouble();
-                tmpSensor2.temperatureChannel = ui->temperatureChannel->text().toDouble();
-                tmpSensor2.A.append(ui->A0->text().toDouble());
-                tmpSensor2.A.append(ui->A1->text().toDouble());
-                tmpSensor2.A.append(ui->A2->text().toDouble());
-                tmpSensor2.A.append(ui->A3->text().toDouble());
-                tmpSensor2.A.append(ui->A4->text().toDouble());
-                tmpSensor2.A.append(ui->A5->text().toDouble());
-                tmpSensor2.Fp0 = ui->Fp0->text().toInt();
-                tmpSensor2.Ft0 = ui->Ft0->text().toInt();
-                sensorsData.append(tmpSensor2);
-            }
-
-            else if ((QString::number(sensorsData[sensorsData.size()+1].sensorNumber)) == ui->listWidget->currentItem()->text())
-            {
-                if ((ui->listWidget->count() - sensorsData.count()) > 0 )
-                {
-                sensorsData.reserve(ui->listWidget->count() - sensorsData.count());
-                Sensor tmpSensor3;
-                tmpSensor3.sensorNumber =  ui->SensorNumber->text().toDouble();
-                tmpSensor3.name = ui->Name->text();
-                tmpSensor3.pressureChannel = ui->pressureChanel->text().toDouble();
-                tmpSensor3.temperatureChannel = ui->temperatureChannel->text().toDouble();
-                tmpSensor3.A.append(ui->A0->text().toDouble());
-                tmpSensor3.A.append(ui->A1->text().toDouble());
-                tmpSensor3.A.append(ui->A2->text().toDouble());
-                tmpSensor3.A.append(ui->A3->text().toDouble());
-                tmpSensor3.A.append(ui->A4->text().toDouble());
-                tmpSensor3.A.append(ui->A5->text().toDouble());
-                tmpSensor3.Fp0 = ui->Fp0->text().toInt();
-                tmpSensor3.Ft0 = ui->Ft0->text().toInt();
-                sensorsData.append(tmpSensor3);
-                }
-            }
+        }
     }
 
+    qDebug() << "count" << sensorsData.count();
+    if(sensorsData.count() > 0)
+        qDebug() << sensorsData[0].name << sensorsData[0].sensorNumber;
 
-      QJsonObject new_dataa;
-     // int dif;
-      //ui->listWidget->count() - sensorsData.count() = dif;
-      for(int i = 0; i<ui->listWidget->count(); i++)
-      {
+    QJsonObject new_dataa;
 
-            new_dataa.insert(sensor_Number,sensorsData[i].sensorNumber);
-            new_dataa.insert(namee, sensorsData[i].name);
-            new_dataa.insert(pressure_Channel, sensorsData[i].pressureChannel);
-            new_dataa.insert(temperature_Channel, sensorsData[i].temperatureChannel);
-            new_dataa.insert(AA, sensorsData[i].A);
-            new_dataa.insert(FtO, sensorsData[i].Ft0);
-            new_dataa.insert(FpO, sensorsData[i].Fp0);
-            array.push_back(QJsonValue(new_dataa));
+    for(int i = 0; i<ui->listWidget->count(); i++)
+    {
+        new_dataa.insert(sensor_Number,sensorsData[i].sensorNumber);
+        new_dataa.insert(namee, sensorsData[i].name);
+        new_dataa.insert(pressure_Channel, sensorsData[i].pressureChannel);
+        new_dataa.insert(temperature_Channel, sensorsData[i].temperatureChannel);
+        new_dataa.insert(AA, sensorsData[i].A);
+        new_dataa.insert(FtO, sensorsData[i].Ft0);
+        new_dataa.insert(FpO, sensorsData[i].Fp0);
+        array.push_back(QJsonValue(new_dataa));
+    }
 
-       }
        QJsonObject changed_data;
        changed_data.insert(QString("sensors"),QJsonValue(array));
        QJsonDocument new_doc (changed_data);

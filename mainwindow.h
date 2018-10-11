@@ -12,15 +12,7 @@
 namespace Ui {
 class MainWindow;
 }
-struct Sensor_new{
- double sensorNumber;
- QString name;
- double pressureChannel;
- double temperatureChannel;
- QJsonArray A;
- int Ft0;
- int Fp0;
-};
+
 
 struct Sensor{
  double sensorNumber;
@@ -62,7 +54,6 @@ private:
     QJsonDocument document;
     QJsonDocument doc1;
     QList<Sensor> sensorsData;
-    QList<Sensor_new> sensorsData_new;
 };
 
 #endif // MAINWINDOW_H

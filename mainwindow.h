@@ -48,6 +48,8 @@ private slots:
 
     void on_pushbutton_save_clicked();
 
+    void on_pushbutton_save_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFile *file;

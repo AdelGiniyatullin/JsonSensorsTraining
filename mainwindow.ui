@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>795</width>
-    <height>523</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -230,7 +230,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushbutton_save_2">
+           <widget class="QPushButton" name="pushbutton_choose">
             <property name="text">
              <string>Choose the file</string>
             </property>

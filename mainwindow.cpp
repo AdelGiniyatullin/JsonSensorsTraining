@@ -11,6 +11,7 @@
 #include <QFileDialog>
 #include <QColor>
 #include <QPalette>
+#include <QSettings>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -18,6 +19,53 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    file = new QFile(this);
+    QSettings setting ("MyApp","TheWay");
+    setting.beginGroup("TheWayToFile");
+    file->setFileName(setting.value("Dir").toString());
+    if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "FILE NOT OPEN";
+    }
+
+    if (file->isOpen())
+    {
+        QPalette palette = ui->pushbutton_choose->palette();
+        palette.setColor(ui->pushbutton_choose->backgroundRole(), Qt::green);
+        palette.setColor(ui->pushbutton_choose->foregroundRole(), Qt::green);
+        ui->pushbutton_choose->setAutoFillBackground(true);
+        ui->pushbutton_choose->setPalette(palette);
+
+    }
+    else
+    {
+        QPalette palette = ui->pushbutton_choose->palette();
+        palette.setColor(ui->pushbutton_choose->backgroundRole(), Qt::red);
+        palette.setColor(ui->pushbutton_choose->foregroundRole(), Qt::red);
+        ui->pushbutton_choose->setAutoFillBackground(true);
+        ui->pushbutton_choose->setPalette(palette);
+    }
+
+    document = QJsonDocument::fromJson(file->readAll());
+    QJsonObject obj = document.object();
+    QJsonValue value = obj.value("sensors");
+    QJsonArray vall = value.toArray();
+    for (int i=0; i<vall.count(); i++)
+    {
+        QJsonObject object  = vall.at(i).toObject();
+        Sensor tmpSensor;
+        tmpSensor.sensorNumber = object.value("sensorNumber").toDouble();
+        tmpSensor.name = object.value("name").toString();
+        tmpSensor.pressureChannel = object.value("pressureChannel").toDouble();
+        tmpSensor.temperatureChannel = object.value("temperatureChannel").toDouble();
+        tmpSensor.A = object.value("A").toArray();
+        tmpSensor.Ft0 = object.value("Ft0").toInt();
+        tmpSensor.Fp0 = object.value("Fp0").toInt();
+        sensorsData.append(tmpSensor);
+        ui->listWidget->addItem((QString::number(object.value("sensorNumber").toDouble())));
+    }
+    file->close();
+    setting.endGroup();
 }
 
 MainWindow::~MainWindow()
@@ -156,10 +204,14 @@ void MainWindow::on_pushbutton_save_clicked()
 
 }
 
-void MainWindow::on_pushbutton_save_2_clicked()
+void MainWindow::on_pushbutton_choose_clicked()
 {
-    QString file_name = QFileDialog::getOpenFileName(this,"Open a file","/users/adelginiatullin");
-    file = new QFile(file_name, this);
+    ui->listWidget->clear();
+    QString file_name = QFileDialog::getOpenFileName(this,"Open the file","/users/adelginiatullin");
+    file->setFileName(file_name);
+    QSettings setting ("MyApp","TheWay");
+    setting.beginGroup("TheWayToFile");
+    setting.setValue("Dir", file_name);
 
     if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -168,20 +220,20 @@ void MainWindow::on_pushbutton_save_2_clicked()
 
     if (file->isOpen())
     {
-        QPalette palette = ui->pushbutton_save_2->palette();
-        palette.setColor(ui->pushbutton_save_2->backgroundRole(), Qt::green);
-        palette.setColor(ui->pushbutton_save_2->foregroundRole(), Qt::green);
-        ui->pushbutton_save_2->setAutoFillBackground(true);
-        ui->pushbutton_save_2->setPalette(palette);
+        QPalette palette = ui->pushbutton_choose->palette();
+        palette.setColor(ui->pushbutton_choose->backgroundRole(), Qt::green);
+        palette.setColor(ui->pushbutton_choose->foregroundRole(), Qt::green);
+        ui->pushbutton_choose->setAutoFillBackground(true);
+        ui->pushbutton_choose->setPalette(palette);
 
     }
     else
     {
-        QPalette palette = ui->pushbutton_save_2->palette();
-        palette.setColor(ui->pushbutton_save_2->backgroundRole(), Qt::red);
-        palette.setColor(ui->pushbutton_save_2->foregroundRole(), Qt::red);
-        ui->pushbutton_save_2->setAutoFillBackground(true);
-        ui->pushbutton_save_2->setPalette(palette);
+        QPalette palette = ui->pushbutton_choose->palette();
+        palette.setColor(ui->pushbutton_choose->backgroundRole(), Qt::red);
+        palette.setColor(ui->pushbutton_choose->foregroundRole(), Qt::red);
+        ui->pushbutton_choose->setAutoFillBackground(true);
+        ui->pushbutton_choose->setPalette(palette);
     }
 
     document = QJsonDocument::fromJson(file->readAll());
@@ -203,4 +255,7 @@ void MainWindow::on_pushbutton_save_2_clicked()
         ui->listWidget->addItem((QString::number(object.value("sensorNumber").toDouble())));
     }
     file->close();
+    setting.endGroup();
 }
+
+
